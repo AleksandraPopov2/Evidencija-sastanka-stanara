@@ -1,0 +1,22 @@
+﻿@model EvidencijaSastanka.DTO.ZgradaDTO.PrikazZgradeDTO
+
+<h2>Izmena zgrade</h2>
+
+<form asp-action="Izmeni" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Naziv" class="form-label"></label>
+        <input asp-for="Naziv" class="form-control" />
+        <span asp-validation-for="Naziv" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Adresa" class="form-label"></label>
+        <input asp-for="Adresa" class="form-control" />
+        <span asp-validation-for="Adresa" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Sačuvaj izmene</button>
+    <a asp-action="Index" class="btn btn-secondary">Nazad</a>
+</form>

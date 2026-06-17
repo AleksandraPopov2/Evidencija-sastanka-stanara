@@ -1,0 +1,107 @@
+﻿@model EvidencijaSastanka.DTO.SastanakDTO.SastanakDodavanjeDTO
+@using EvidencijaSastanka.DTO.StanarDTO
+
+@{
+    ViewData["Title"] = "Dodavanje sastanka";
+    var stanari = ViewBag.Stanari as List<PrikazStanaraDTO>;
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Dodavanje sastanka kućnog saveta</h4>
+        </div>
+
+        <div class="card-body">
+            <form method="get" asp-action="Dodaj" class="mb-4">
+                <div class="row align-items-end">
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Izaberite zgradu</label>
+                        <select name="zgradaId" asp-items="ViewBag.Zgrade" class="form-select">
+                            <option value="">-- Izaberite zgradu --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">
+                            Učitaj stanare
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <form asp-action="Dodaj" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <input type="hidden" asp-for="ZgradaId" />
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DatumSastanka" class="form-label fw-bold">Datum i vreme sastanka</label>
+                        <input asp-for="DatumSastanka"
+                               type="datetime-local"
+                               step="60"
+                               value="@Model.DatumSastanka.ToString("yyyy-MM-ddTHH:mm")"
+                               class="form-control" />
+                        <span asp-validation-for="DatumSastanka" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Tema" class="form-label fw-bold">Tema sastanka</label>
+                        <input asp-for="Tema" class="form-control" placeholder="Npr. Popravka lifta" />
+                        <span asp-validation-for="Tema" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Zakljucak" class="form-label fw-bold">Zaključak</label>
+                    <textarea asp-for="Zakljucak" class="form-control" rows="4"></textarea>
+                </div>
+
+                <hr />
+
+                <h5>Prisutni stanari</h5>
+
+                @if (stanari != null && stanari.Any())
+                {
+                    <div class="row">
+                        @foreach (var stanar in stanari)
+                        {
+                            <div class="col-md-6 mb-2">
+                                <div class="form-check border rounded p-2 ps-5 bg-light">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="PrisutniStanariIds"
+                                           value="@stanar.Id" />
+
+                                    <label class="form-check-label">
+                                        <strong>@stanar.Ime @stanar.Prezime</strong>
+                                        <span class="text-muted">| stan @stanar.BrojStana</span>
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        Izaberite zgradu i kliknite „Učitaj stanare”.
+                    </div>
+                }
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-success">
+                        Sačuvaj sastanak
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Nazad
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

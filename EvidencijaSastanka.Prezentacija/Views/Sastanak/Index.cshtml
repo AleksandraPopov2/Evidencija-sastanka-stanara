@@ -1,0 +1,72 @@
+﻿@model List<EvidencijaSastanka.DTO.SastanakDTO.PrikazSastankaDTO>
+
+@{
+    ViewData["Title"] = "Sastanci";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-0">Pregled sastanaka</h2>
+            <p class="text-muted mb-0">Lista evidentiranih sastanaka kućnog saveta.</p>
+        </div>
+
+        <a asp-action="Dodaj" class="btn btn-primary">
+            Dodaj sastanak
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Datum</th>
+                        <th>Tema</th>
+                        <th>Zgrada</th>
+                        <th>Prisutnih</th>
+                        <th>Status</th>
+                        <th class="text-end">Akcije</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        foreach (var s in Model)
+                        {
+                            <tr>
+                                <td>@s.DatumSastanka.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>@s.Tema</td>
+                                <td>@s.NazivZgrade</td>
+                                <td>@s.BrojPrisutnih</td>
+                                <td>@s.StatusSastanka</td>
+                                <td class="text-end">
+                                    <a asp-action="Izmeni" asp-route-id="@s.Id" class="btn btn-warning btn-sm">
+                                        Izmeni
+                                    </a>
+
+                                    <form asp-action="Obrisi" asp-route-id="@s.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Da li želite da obrišete sastanak?');">
+                                            Obriši
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                Nema evidentiranih sastanaka.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

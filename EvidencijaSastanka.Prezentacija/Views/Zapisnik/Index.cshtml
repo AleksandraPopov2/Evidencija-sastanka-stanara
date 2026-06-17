@@ -1,0 +1,68 @@
+﻿@model List<EvidencijaSastanka.DTO.SastanakDTO.PrikazSastankaDTO>
+
+@{
+    ViewData["Title"] = "Zapisnici";
+}
+
+<div class="container mt-4">
+    <h2>Zapisnici sa sastanaka</h2>
+    <p class="text-muted">Izaberite sastanak za prikaz i štampu zapisnika.</p>
+
+    <form asp-action="Index" method="get" class="card card-body shadow-sm mb-4">
+        <div class="row align-items-end">
+            <div class="col-md-8">
+                <label class="form-label fw-bold">Filter po zgradi</label>
+                <select name="zgradaId" asp-items="ViewBag.Zgrade" class="form-select">
+                    <option value="">Sve zgrade</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Filtriraj</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Datum</th>
+                        <th>Tema</th>
+                        <th>Zgrada</th>
+                        <th>Prisutnih</th>
+                        <th>Status</th>
+                        <th class="text-end">Akcija</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var sastanak in Model)
+                    {
+                        <tr>
+                            <td>@sastanak.DatumSastanka.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@sastanak.Tema</td>
+                            <td>@sastanak.NazivZgrade</td>
+                            <td>@sastanak.BrojPrisutnih</td>
+                            <td>@sastanak.StatusSastanka</td>
+                            <td class="text-end">
+                                <a asp-action="Stampa" asp-route-id="@sastanak.Id" class="btn btn-dark btn-sm">
+                                    Otvori zapisnik
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                Nema sastanaka za prikaz.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

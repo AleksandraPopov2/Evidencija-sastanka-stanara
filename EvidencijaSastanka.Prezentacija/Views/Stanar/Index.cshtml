@@ -1,0 +1,65 @@
+﻿@model List<EvidencijaSastanka.DTO.StanarDTO.PrikazStanaraDTO>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-0">Pregled stanara</h2>
+            <p class="text-muted mb-0">Lista svih stanara evidentiranih u zgradama.</p>
+        </div>
+
+        <a asp-action="Dodaj" class="btn btn-primary">
+            Dodaj stanara
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ime</th>
+                        <th>Prezime</th>
+                        <th>Email</th>
+                        <th>Broj stana</th>
+                        <th>Zgrada</th>
+                        <th class="text-end">Akcije</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var stanar in Model)
+                        {
+                            <tr>
+                                <td>@stanar.Ime</td>
+                                <td>@stanar.Prezime</td>
+                                <td>@stanar.Email</td>
+                                <td>@stanar.BrojStana</td>
+                                <td>@stanar.NazivZgrade</td>
+                                <td class="text-end">
+                                    <a asp-action="Izmeni" asp-route-id="@stanar.Id" class="btn btn-warning btn-sm">
+                                        Izmeni
+                                    </a>
+
+                                    <a asp-action="Obrisi" asp-route-id="@stanar.Id" class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Da li ste sigurni da želite da obrišete stanara?');">
+                                        Obriši
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                Nema unetih stanara.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

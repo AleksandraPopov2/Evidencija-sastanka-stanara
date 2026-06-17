@@ -1,0 +1,59 @@
+﻿@model EvidencijaSastanka.DTO.SastanakDTO.PrikazSastankaDTO
+
+@{
+    ViewData["Title"] = "Izmena sastanka";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Izmena sastanka</h4>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Izmeni" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DatumSastanka" class="form-label fw-bold">Datum i vreme sastanka</label>
+                        <input asp-for="DatumSastanka"
+                               type="datetime-local"
+                               step="60"
+                               value="@Model.DatumSastanka.ToString("yyyy-MM-ddTHH:mm")"
+                               class="form-control" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Tema" class="form-label fw-bold">Tema</label>
+                        <input asp-for="Tema" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ZgradaId" class="form-label fw-bold">Zgrada</label>
+                    <select asp-for="ZgradaId" asp-items="ViewBag.Zgrade" class="form-select"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Zakljucak" class="form-label fw-bold">Zaključak</label>
+                    <textarea asp-for="Zakljucak" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-success">
+                        Sačuvaj izmene
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Nazad
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿@model List<EvidencijaSastanka.DTO.ZgradaDTO.PrikazZgradeDTO>
+
+@{
+    ViewData["Title"] = "Pregled zgrada";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-0">Pregled zgrada</h2>
+            <p class="text-muted mb-0">Lista evidentiranih zgrada u sistemu.</p>
+        </div>
+
+        <a asp-action="Dodaj" class="btn btn-primary">
+            Dodaj zgradu
+        </a>
+    </div>
+
+    @if (TempData["Greska"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Greska"]
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Naziv</th>
+                        <th>Adresa</th>
+                        <th class="text-end">Akcije</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var zgrada in Model)
+                        {
+                            <tr>
+                                <td>@zgrada.Naziv</td>
+                                <td>@zgrada.Adresa</td>
+                                <td class="text-end">
+                                    <a asp-action="Izmeni" asp-route-id="@zgrada.Id" class="btn btn-warning btn-sm">
+                                        Izmeni
+                                    </a>
+
+                                    <form asp-action="Obrisi" asp-route-id="@zgrada.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Da li ste sigurni da želite da obrišete ovu zgradu?');">
+                                            Obriši
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">
+                                Nema unetih zgrada.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

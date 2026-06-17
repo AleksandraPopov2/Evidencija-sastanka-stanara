@@ -1,0 +1,63 @@
+﻿@model EvidencijaSastanka.DTO.KorisnikDTO.PrijavaDTO
+
+@{
+    ViewData["Title"] = "Prijava";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">Prijava korisnika</h4>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="Index" method="post" id="loginForma">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="KorisnickoIme" class="form-label">Korisničko ime</label>
+                            <input asp-for="KorisnickoIme" class="form-control" id="KorisnickoIme" />
+                            <span asp-validation-for="KorisnickoIme" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Lozinka" class="form-label">Lozinka</label>
+                            <input asp-for="Lozinka" type="password" class="form-control" id="Lozinka" />
+                            <span asp-validation-for="Lozinka" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Prijavi se
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("loginForma").addEventListener("submit", function (e) {
+        const korisnickoIme = document.getElementById("KorisnickoIme").value.trim();
+        const lozinka = document.getElementById("Lozinka").value.trim();
+
+        const korisnickoImeRegex = /^[A-Za-z0-9_]{3,20}$/;
+        const lozinkaRegex = /^.{3,30}$/;
+
+        if (!korisnickoImeRegex.test(korisnickoIme)) {
+            e.preventDefault();
+            alert("Korisničko ime mora imati od 3 do 20 karaktera i sme sadržati samo slova, brojeve i donju crtu.");
+            return;
+        }
+
+        if (!lozinkaRegex.test(lozinka)) {
+            e.preventDefault();
+            alert("Lozinka mora imati od 3 do 30 karaktera.");
+            return;
+        }
+    });
+</script>

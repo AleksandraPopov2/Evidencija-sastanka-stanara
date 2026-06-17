@@ -1,0 +1,6 @@
+@EvidencijaSastanka.Servisi_HostAddress = http://localhost:5146
+
+GET {{EvidencijaSastanka.Servisi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

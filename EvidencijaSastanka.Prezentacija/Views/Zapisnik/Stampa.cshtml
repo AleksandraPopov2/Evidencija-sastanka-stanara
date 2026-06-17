@@ -1,0 +1,312 @@
+﻿@model EvidencijaSastanka.DTO.ZapisnikDTO.ZapisnikDTO
+
+@{
+    Layout = null;
+    var datum = Model.DatumSastanka.ToString("dd.MM.yyyy");
+    var vreme = Model.DatumSastanka.ToString("HH:mm");
+}
+
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="utf-8" />
+    <title>Zapisnik sa sastanka stanara</title>
+
+    <style>
+        body {
+            font-family: "Times New Roman", serif;
+            color: #000;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .print-actions {
+            width: 210mm;
+            margin: 15px auto;
+            text-align: right;
+        }
+
+        .print-button {
+            padding: 8px 16px;
+            border: 1px solid #222;
+            background: #222;
+            color: white;
+            cursor: pointer;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 14mm 18mm;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .top-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .header-line {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .header-field {
+            flex: 1;
+            border-bottom: 1px solid #000;
+            height: 18px;
+        }
+
+        .document-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin: 12px 0 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        td, th {
+            border: 1px solid #000;
+            padding: 5px 7px;
+            vertical-align: middle;
+        }
+
+        .label-cell {
+            width: 28%;
+            font-weight: bold;
+        }
+
+        .check-box {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border: 1px solid #000;
+            margin: 0 5px 0 15px;
+            vertical-align: middle;
+        }
+
+        .checked-box {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            border: 1px solid #000;
+            margin: 0 5px 0 15px;
+            vertical-align: middle;
+            position: relative;
+        }
+
+            .checked-box::after {
+                content: "✓";
+                font-size: 12px;
+                position: absolute;
+                top: -5px;
+                left: 1px;
+            }
+
+        .presence th {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .presence td {
+            height: 22px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .conclusion-box {
+            border: 1px solid #000;
+            min-height: 58px;
+            padding: 8px;
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 28px;
+            font-size: 13px;
+        }
+
+        .signature-block {
+            width: 42%;
+        }
+
+        .signature-line {
+            margin-top: 28px;
+            border-bottom: 1px solid #000;
+            height: 18px;
+        }
+
+        @@media print {
+            .print-actions {
+                display: none;
+            }
+
+            .page {
+                margin: 0;
+                width: auto;
+                min-height: auto;
+            }
+
+            body {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="print-actions">
+        <button class="print-button" onclick="window.print()">Štampaj</button>
+    </div>
+
+    <div class="page">
+        <div class="top-title">UPRAVLJANJE ZGRADOM</div>
+        <div class="subtitle">STAMBENA ZAJEDNICA</div>
+
+        <div class="header-line">
+            <span>Adresa:</span><div class="header-field"></div>
+            <span>Telefon:</span><div class="header-field"></div>
+            <span>Email:</span><div class="header-field"></div>
+        </div>
+
+        <div class="document-title">ZAPISNIK SA SASTANKA STANARA</div>
+
+        <div class="section-title">1. PODACI O SASTANKU</div>
+
+        <table>
+            <tr>
+                <td class="label-cell">ID sastanka</td>
+                <td>@Model.IdSastanka</td>
+            </tr>
+            <tr>
+                <td class="label-cell">Datum sastanka</td>
+                <td>@datum</td>
+            </tr>
+            <tr>
+                <td class="label-cell">Vreme sastanka</td>
+                <td>@vreme</td>
+            </tr>
+            <tr>
+                <td class="label-cell">Mesto održavanja</td>
+                <td>@Model.NazivZgrade</td>
+            </tr>
+            <tr>
+                <td class="label-cell">Tema sastanka</td>
+                <td>@Model.Tema</td>
+            </tr>
+            <tr>
+                <td class="label-cell">Status sastanka</td>
+                <td>
+                    <span class="checked-box"></span> Validan
+                    <span class="check-box"></span> Nevalidan
+                </td>
+            </tr>
+            <tr>
+                <td class="label-cell">Napomena</td>
+                <td>@Model.StatusSastanka</td>
+            </tr>
+        </table>
+
+        <div class="section-title">2. PRISUSTVO STANARA</div>
+
+        <table class="presence">
+            <thead>
+                <tr>
+                    <th style="width: 12%;">Redni broj</th>
+                    <th>Stanar (ime i prezime)</th>
+                    <th style="width: 18%;">Broj stana</th>
+                    <th style="width: 20%;">Prisutan (DA/NE)</th>
+                    <th style="width: 22%;">Potpis</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Stanari != null && Model.Stanari.Any())
+                {
+                    foreach (var stanar in Model.Stanari)
+                    {
+                        <tr>
+                            <td class="center">@stanar.RedniBroj.</td>
+                            <td>@stanar.ImePrezime</td>
+                            <td class="center">@stanar.BrojStana</td>
+                            <td class="center">@(stanar.Prisutan ? "DA" : "NE")</td>
+                            <td></td>
+                        </tr>
+                    }
+
+                    for (int i = Model.Stanari.Count + 1; i <= 10; i++)
+                    {
+                        <tr>
+                            <td class="center">@i.</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        <tr>
+                            <td class="center">@i.</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <div class="section-title">3. ZAKLJUČCI / DOGOVORI</div>
+
+        <div class="conclusion-box">
+            @Model.Zakljucak
+        </div>
+
+        <div class="signatures">
+            <div class="signature-block">
+                Zapisničar:
+                <div class="signature-line"></div>
+            </div>
+
+            <div class="signature-block">
+                Predsednik skupštine stanara:
+                <div class="signature-line"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

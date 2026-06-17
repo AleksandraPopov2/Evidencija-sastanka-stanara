@@ -1,0 +1,29 @@
+﻿@model List<EvidencijaSastanka.Modeli.Modeli.Zgrada>
+
+@{
+    ViewData["Title"] = "DBUtils pregled zgrada";
+}
+
+<div class="container mt-4">
+    <h2>Pregled zgrada preko DBUtils klase</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Naziv</th>
+                <th>Adresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var zgrada in Model)
+            {
+                <tr>
+                    <td>@zgrada.Id</td>
+                    <td>@zgrada.Naziv</td>
+                    <td>@zgrada.Adresa</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
