@@ -1,0 +1,99 @@
+CREATE DATABASE EvidencijaSastanka;
+GO
+
+USE EvidencijaSastanka;
+GO
+
+CREATE TABLE Korisnik (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Ime NVARCHAR(MAX) NOT NULL,
+    Prezime NVARCHAR(MAX) NOT NULL,
+    KorisnickoIme NVARCHAR(MAX) NOT NULL,
+    Lozinka NVARCHAR(MAX) NOT NULL
+);
+GO
+
+CREATE TABLE Zgrada (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Naziv NVARCHAR(MAX) NOT NULL,
+    Adresa NVARCHAR(MAX) NOT NULL
+);
+GO
+
+CREATE TABLE Stanar (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Ime NVARCHAR(MAX) NOT NULL,
+    Prezime NVARCHAR(MAX) NOT NULL,
+    BrojStana INT NOT NULL,
+    Email NVARCHAR(MAX) NULL,
+    ZgradaId INT NOT NULL,
+
+    CONSTRAINT FK_Stanar_Zgrada
+    FOREIGN KEY (ZgradaId) REFERENCES Zgrada(Id)
+);
+GO
+
+CREATE TABLE Sastanak (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    DatumSastanka DATETIME2 NOT NULL,
+    Tema NVARCHAR(MAX) NOT NULL,
+    BrojPrisutnih INT NOT NULL,
+    ProcenatPrisutnih DECIMAL(18,2) NOT NULL,
+    StatusSastanka NVARCHAR(MAX) NOT NULL,
+    Zakljucak NVARCHAR(MAX) NULL,
+    ZgradaId INT NOT NULL,
+
+    CONSTRAINT FK_Sastanak_Zgrada
+    FOREIGN KEY (ZgradaId) REFERENCES Zgrada(Id)
+);
+GO
+
+CREATE TABLE PrisustvoNaSastanku (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    SastanakId INT NOT NULL,
+    StanarId INT NOT NULL,
+    Prisutan BIT NOT NULL,
+
+    CONSTRAINT FK_PrisustvoNaSastanku_Sastanak
+    FOREIGN KEY (SastanakId) REFERENCES Sastanak(Id),
+
+    CONSTRAINT FK_PrisustvoNaSastanku_Stanar
+    FOREIGN KEY (StanarId) REFERENCES Stanar(Id)
+);
+GO
+
+CREATE INDEX IX_Stanar_ZgradaId
+ON Stanar(ZgradaId);
+GO
+
+CREATE INDEX IX_Sastanak_ZgradaId
+ON Sastanak(ZgradaId);
+GO
+
+CREATE INDEX IX_PrisustvoNaSastanku_SastanakId
+ON PrisustvoNaSastanku(SastanakId);
+GO
+
+CREATE INDEX IX_PrisustvoNaSastanku_StanarId
+ON PrisustvoNaSastanku(StanarId);
+GO
+
+CREATE OR ALTER PROCEDURE LoginKorisnika
+    @KorisnickoIme NVARCHAR(100),
+    @Lozinka NVARCHAR(100)
+AS
+BEGIN
+    SELECT 
+        Id,
+        KorisnickoIme,
+        Ime,
+        Prezime
+    FROM Korisnik
+    WHERE KorisnickoIme = @KorisnickoIme
+      AND Lozinka = @Lozinka;
+END;
+GO
+
+INSERT INTO Korisnik (Ime, Prezime, KorisnickoIme, Lozinka)
+VALUES ('Aleksandra', 'Popov', 'admin', 'admin');
+GO
